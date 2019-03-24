@@ -1,0 +1,13 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <p>Welcome to {{ title }}</p>
+
+
+
+    <canvas id="canvas" width="800" height="600">Элемент не поддерживается браузером</canvas>
+    <div id="combat-log"></div>
+    <script data-main="/js/game/index.js" src="/node_modules/requirejs/require.js"></script>
+
+{% endblock %}
