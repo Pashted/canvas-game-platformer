@@ -18,5 +18,5 @@ require.config({
     }
 });
 
-require(['jquery'], $ => require(['main']));
+require(['jquery'], () => require(['main']));
 

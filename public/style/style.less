@@ -1,7 +1,7 @@
 body {
-    padding: 50px;
-    font:    14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    color: #eee;
+    padding:    50px;
+    font:       14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    color:      #fff;
     background: #444;
 }
 
@@ -10,5 +10,30 @@ a {
 }
 
 canvas {
-    background: #aaa;
+    cursor: crosshair;
+}
+
+.panel {
+    float:      right;
+    text-align: right;
+}
+
+[id^=fps] {
+    display: inline-block;
+}
+
+[id$=log] {
+    p {
+        margin: 3px 0;
+    }
+    &:after {
+        content: '';
+        display: block;
+        clear:   both;
+    }
+    .system {
+        color:      #999;
+        font-style: italic
+    }
+
 }
