@@ -1,20 +1,23 @@
-define(['view', 'log'], (view, log) => {
+define(['view', 'log', 'ws'], (view, log, ws) => {
 
     let colors = [
             "#b22",
-            "#2b2",
-            "#bb2",
-            "#22b",
-            "#b2b",
-            "#2bb",
+            "#3cba23",
+            "#baba23",
+            "#2323b8",
+            "#a123ba",
+            "#23baa1",
+            "#84f",
+            "#e70",
+            "#eee",
+            "#111",
         ],
 
-        Player = function (name) {
-            this.name = name;
+        Player = function () {
             this.width = 32;
             this.height = 64;
             this.pos = { X: 0, Y: 0 };
-            this.velocity = { X: 15, Y: 15 };
+            this.velocity = { X: 3, Y: 3 };
             this.score = 0;
             this.state = {
                 move_left:  false,
@@ -38,7 +41,7 @@ define(['view', 'log'], (view, log) => {
     };
 
 
-    Player.prototype.Shoot = function (position) {
+    Player.prototype.shoot = function (position) {
 
         view.bullets.push(position);
 
@@ -47,22 +50,41 @@ define(['view', 'log'], (view, log) => {
         log.write('combat', `<span style="color:${this.color}">${this.name}</span> makes a shot.score: ${this.score}`);
     };
 
-    Player.prototype.Login = function () {
-        this.id = view.players.length;
-        this.color = colors[this.id];
+    Player.prototype.login = function () {
+        ws.connect()
+            .then(() => {
+                let name =
+                    // prompt('Как Вас зовут?',
+                        "Player" + Math.floor(Math.random() * 100)
+                    // )
+                ;
 
-        view.players.push(this);
+                if (!name) {
+                    alert('Имя не определено. Соединение невозможно.');
+                    return false;
+                }
 
-        log.write('system', `<span style="color:${this.color}">${this.name}</span> LOGGED IN`);
+                this.name = name;
+
+                ws.socket.send(JSON.stringify({ name }));
+
+                this.id = view.players.length;
+                this.color = colors[this.id];
+
+                view.players.push(this);
+
+                log.write('system', `<span style="color:${this.color}">${this.name}</span> LOGGED IN`);
+
+            });
 
     };
 
 
     return {
-        init(name) {
-            let gamer = new Player(name);
+        init() {
+            let gamer = new Player();
 
-            gamer.Login();
+            gamer.login();
 
 
             // TODO: gamer auth, connect, set props methods etc
@@ -75,6 +97,6 @@ define(['view', 'log'], (view, log) => {
         },
         set_player() {
             // TODO: ws setter to the server
-        }
+        },
     }
 });
