@@ -74,13 +74,15 @@ define(['view', 'log', 'socket'], (view, log, socket) => {
     };
 
 
-    Player.prototype.shoot = function (position) {
+    Player.prototype.shoot = function (bullet) {
 
-        view.bullets.push(position);
+        view.bullets.push(bullet);
 
         this.score++;
 
-        log.write('combat', `<span style="color:${this.color}">${this.name}</span> makes a shot.score: ${this.score}`);
+        socket.socket.emit('shoot', { bullet, score: this.score });
+
+        log.write('combat', `<span style="color:${this.color}">${this.name}</span> делает выстрел. Счёт: ${this.score}`);
     };
 
     // Player.prototype.login = function () {
@@ -97,6 +99,11 @@ define(['view', 'log', 'socket'], (view, log, socket) => {
 
                         socket.socket.on('update', res => {
                             view.players[res.id] = res.char;
+                        });
+
+                        socket.socket.on('shoot', res => {
+                            view.bullets.push(res.bullet);
+                            log.write('combat', `<span style="color:${res.color}">${res.name}</span> делает выстрел. Счёт: ${res.score}`);
                         });
 
                         socket.socket.on('logoff', res => {
