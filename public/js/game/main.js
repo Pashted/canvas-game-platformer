@@ -6,19 +6,18 @@ define(['view', 'player'], (view, player) => {
      *  stats loader
      */
 
-    let app = {
-
+    return {
 
         init() {
-            let p1 = player.init('Вася');
-            let p2 = player.init('Петя');
-
-
             view.init();
-            // this.ctx.rect(0, 0, 700, 550);
-            // this.ctx.fillStyle = "#aaa";
-            // this.ctx.fill();
+            player.init()
+                .then(() => this.game_start());
 
+        },
+
+        game_start() {
+            console.log('GAME START');
+            // TODO: вынести обработчики этих событий в модуль control
             let shooting, mousePos;
 
             view.$ctx.on({
@@ -29,8 +28,8 @@ define(['view', 'player'], (view, player) => {
 
                     mousePos = { X: e.offsetX, Y: e.offsetY };
 
-                    p1.Shoot(mousePos);
-                    shooting = setInterval(() => p1.Shoot(mousePos), 100);
+                    player.char.shoot(mousePos);
+                    shooting = setInterval(() => player.char.shoot(mousePos), 100);
                 },
 
                 mousemove:   e => mousePos = { X: e.offsetX, Y: e.offsetY },
@@ -55,28 +54,27 @@ define(['view', 'player'], (view, player) => {
                     switch (e.which) {
                         case 65:
                         case 37:
-                            p1.state.move_left = true;
-                            p1.state.move_right = false;
+                            player.char.state.move_left = true;
+                            player.char.state.move_right = false;
                             break;
                         case 68:
                         case 39:
-                            p1.state.move_right = true;
-                            p1.state.move_left = false;
+                            player.char.state.move_right = true;
+                            player.char.state.move_left = false;
                             break;
                         case 83:
                         case 40:
-                            p1.state.move_down = true;
-                            p1.state.move_up = false;
+                            player.char.state.move_down = true;
+                            player.char.state.move_up = false;
                             break;
                         case 87:
                         case 38:
                         case 32:
-                            p1.state.move_up = true;
-                            p1.state.move_down = false;
+                            player.char.state.move_up = true;
+                            player.char.state.move_down = false;
                             break;
                         default:
                             console.log(e.which);
-                        // return false
                     }
                 },
                 keyup(e) {
@@ -84,33 +82,32 @@ define(['view', 'player'], (view, player) => {
                     switch (e.which) {
                         case 65:
                         case 37:
-                            p1.state.move_left = false;
+                            player.char.state.move_left = false;
                             break;
                         case 68:
                         case 39:
-                            p1.state.move_right = false;
+                            player.char.state.move_right = false;
                             break;
                         case 83:
                         case 40:
-                            p1.state.move_down = false;
+                            player.char.state.move_down = false;
                             break;
                         case 87:
                         case 38:
                         case 32:
-                            p1.state.move_up = false;
+                            player.char.state.move_up = false;
                             break;
                         default:
                             console.log(e.which);
-                        // return false
                     }
                 }
             })
+        },
+
+        game_over() {
 
         }
 
-
     };
-
-    app.init();
 
 });

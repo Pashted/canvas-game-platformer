@@ -14,7 +14,7 @@ define(['log'], (log) => {
     return {
         $ctx:    $('#canvas'), ctx: {},
         bullets: [],
-        players: [],
+        players: {},
 
         fps:  0,
         rate: 4, // сколько раз в сек обновлять счетчик фпс
@@ -37,29 +37,33 @@ define(['log'], (log) => {
          */
         update() {
 
-            for (let i = 0; i < this.players.length; i++) {
-                if (this.players[i].state.move_left)
-                    this.players[i].moveLeft();
-                else if (this.players[i].state.move_right)
-                    this.players[i].moveRight();
+            if (!this.players.main)
+                return;
 
-                if (this.players[i].state.move_up)
-                    this.players[i].moveUp();
-                else if (this.players[i].state.move_down)
-                    this.players[i].moveDown();
+            // ограничитель до краев карты
 
-                if (this.players[i].pos.Y + this.players[i].height >= this.ctx.canvas.height)
-                    this.players[i].pos.Y = this.ctx.canvas.height - this.players[i].height;
+            if (this.players.main.pos.Y + this.players.main.height >= this.ctx.canvas.height)
+                this.players.main.pos.Y = this.ctx.canvas.height - this.players.main.height;
 
-                else if (this.players[i].pos.Y <= 0)
-                    this.players[i].pos.Y = 0;
+            if (this.players.main.pos.Y <= 0)
+                this.players.main.pos.Y = 0;
 
-                if (this.players[i].pos.X + this.players[i].width >= this.ctx.canvas.width)
-                    this.players[i].pos.X = this.ctx.canvas.width - this.players[i].width;
+            if (this.players.main.pos.X + this.players.main.width >= this.ctx.canvas.width)
+                this.players.main.pos.X = this.ctx.canvas.width - this.players.main.width;
 
-                else if (this.players[i].pos.X <= 0)
-                    this.players[i].pos.X = 0;
-            }
+            if (this.players.main.pos.X <= 0)
+                this.players.main.pos.X = 0;
+
+            if (this.players.main.state.move_left)
+                this.players.main.moveLeft();
+            if (this.players.main.state.move_right)
+                this.players.main.moveRight();
+
+            if (this.players.main.state.move_up)
+                this.players.main.moveUp();
+            if (this.players.main.state.move_down)
+                this.players.main.moveDown();
+
 
         },
 
@@ -71,9 +75,15 @@ define(['log'], (log) => {
             this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
 
-            for (let i = 0; i < this.players.length; i++) {
-                this.draw(this.players[i]);
+            for (let id in this.players) {
+                if (id === 'main')
+                    continue;
+                this.draw(this.players[id]);
             }
+
+            if (this.players.main)
+                this.draw(this.players.main);
+
             for (let i = 0; i < this.bullets.length; i++) {
                 this.draw_bullet(this.bullets[i]);
             }
