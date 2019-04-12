@@ -2,6 +2,7 @@ require.config({
     baseUrl: '/js/game',
     paths:   {
         jquery: '/node_modules/jquery/dist/jquery.min',
+        io:     '/socket.io/socket.io',
         // chosen:                  '../node_modules/chosen-js/chosen.jquery.min',
         // uikit:                   '../node_modules/uikit/dist/js/uikit.min',
         // uikiticons:              '../node_modules/uikit/dist/js/uikit-icons.min',
@@ -18,5 +19,11 @@ require.config({
     }
 });
 
-require(['jquery'], $ => require(['main']));
+require(
+    ['jquery'],
+    () => require(
+        ['main'],
+        app => app.init()
+    )
+);
 
