@@ -68,36 +68,5 @@ define(['log'], log => {
 
         }
 
-        // subscribe() {
-        //     return new Promise(resolve => {
-        //         this.socket.onmessage = function (event) {
-        //             // console.log();
-        //             let msg = JSON.parse(event.data);
-        //             console.log("Получены данные", event.data);
-        //             resolve(msg);
-        //         };
-        //     });
-        //
-        // }
-        // this.socket.onmessage = function (event) {
-        //     console.log("Получены данные", event.data);
-        //
-        //     let res = JSON.parse(event.data);
-        //
-        //     if (res.type === 'login') {
-        //
-        //         if (res.status === 'success') {
-        //
-        //
-        //             log.write('system', `<span style="color:${colors[res.player.id]}">${res.player.name}</span> LOGGED IN`);
-        //             play();
-        //
-        //         } else {
-        //             console.log(res.status);
-        //         }
-        //     }
-        //
-        //     // resolve(msg);
-        // };
     }
 });
