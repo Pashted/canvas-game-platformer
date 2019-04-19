@@ -30,6 +30,16 @@ module.exports = server => {
             socket.broadcast.emit('update', { id, char });
         });
 
+        socket.on('shoot', req => {
+            // игрок раздает другим свои пули, сам же клиент формирует их на своей странице без участия сервера
+            socket.broadcast.emit('shoot', {
+                id,
+                bullet: req.bullet,
+                score:  req.score,
+                name:   players[id].name,
+                color:  players[id].color,
+            });
+        });
 
         // есть ли место на сервере для нового игрока?
         socket.on('check', () => {

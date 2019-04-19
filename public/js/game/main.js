@@ -32,9 +32,11 @@ define(['view', 'player'], (view, player) => {
                     shooting = setInterval(() => player.char.shoot(mousePos), 100);
                 },
 
-                mousemove:   e => mousePos = { X: e.offsetX, Y: e.offsetY },
-                mouseup:     () => clearInterval(shooting),
-                contextmenu: () => false,
+                "mouseup mouseout": () => clearInterval(shooting),
+
+                contextmenu:        () => false,
+
+                mousemove:          e => mousePos = { X: e.offsetX, Y: e.offsetY }
             });
 
             $(document).on({
