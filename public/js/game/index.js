@@ -1,7 +1,7 @@
 require.config({
     baseUrl: '/js/game',
     paths:   {
-        jquery: '/node_modules/jquery/dist/jquery.min',
+        jquery: '/jquery',
         io:     '/socket.io/socket.io',
     }
 });
